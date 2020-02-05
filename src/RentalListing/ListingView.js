@@ -13,6 +13,8 @@ import {
     Text,
     Input,
     Thumbnail,
+    Root,
+    StatusBar,Title
 } from 'native-base';
 import { Alert, TouchableOpacity } from 'react-native';
 import { createAppContainer } from 'react-navigation';
@@ -88,27 +90,32 @@ class ListingView extends Component {
         })
 
         return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => {
-                            Alert.alert('Okay', 'You press hamburger')
-                        }}>
-                            <Icon name="menu" />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Input style={{ color: "#fff" }} placeholder="Search..." placeholderTextColor="#fff" />
-                    </Body>
-                    <Right />
-                </Header>
-                <Content style={{ padding: 5 }}>
-                    {rows}
-                </Content>
-            </Container>
+            <Root>
+                <Container>
+                    <Content style={{ padding: 5 }}>
+                        {rows}
+                    </Content>
+                </Container>
+            </Root>
         );
     }
 }
+ListingView.navigationOptions = ({navigation}) => ({
+    header: (
+      <Header style={{backgroundColor: '#000000'}}>
+        <StatusBar backgroundColor="#000000" barStyle="light-content" />
+        <Left>
+          <Button transparent onPress={() => navigation.openDrawer()}>
+            <Icon name="menu" />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Home</Title>
+        </Body>
+        <Right />
+      </Header>
+    ),
+  });
 
 class CardView extends Component {
     render() {
