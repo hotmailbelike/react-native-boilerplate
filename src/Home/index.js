@@ -6,14 +6,10 @@ import Sidebar from '../Sidebar/index';
 import SettingsView from '../Settings/index';
 import AboutView from '../About/index';
 import HelpView from '../Help/index';
-//import LandingView from '../Landing/index'
-import ListingView from '../RentalListing/ListingView';
+import ListingView from '../RentalListing/index';
 
 const HomeRouter = createDrawerNavigator(
   {
-    // LandingView:{
-    //   screen:LandingView
-    // },
     ListingView: {
       screen: ListingView,
     },

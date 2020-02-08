@@ -6,12 +6,11 @@ import {
   Text,
   List,
   ListItem,
-  Icon,
   Left,
 } from 'native-base';
 
 const routes = [
-  {name: 'Home',route: 'LandingView'},
+  {name: 'Home',route: 'ListingView'},
   {name: 'Sign In', route: 'SignInView'},
   {name: 'About', route: 'AboutView'},
   {name: 'Help', route: 'HelpView'},

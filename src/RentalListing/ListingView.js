@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Image, StatusBar, TouchableOpacity } from 'react-native'
 import {
     Container,
     Header,
@@ -14,18 +15,15 @@ import {
     Input,
     Thumbnail,
     Root,
-    StatusBar,Title
+    Title
 } from 'native-base';
-import { Alert, TouchableOpacity } from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, withNavigationFocus } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import SingleListView from './SingleListView';
 
 
 class ListingView extends Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -58,21 +56,6 @@ class ListingView extends Component {
             )
     }
 
-//     interested_people: []
-// _id: "5e37ccfbc3bf660017f525c6"
-// renter_name: "Test user 2"
-// title: "test user 2"
-// category: "test"
-// short_address: "test user 2"
-// long_address: "test user 2"
-// rate_monthly: 25
-// conditions: "test user 2"
-// status: true
-// description: "test user 2"
-// images: []
-// created: "2020-02-03T07:34:19.946Z"
-// renter: "5e37cc9cc3bf660017f525c5"    
-
     render() {
         const data = this.state.rentList;
         const rows = data.map((item) => {
@@ -83,8 +66,8 @@ class ListingView extends Component {
                     });
                 }}>
                     <CardView title={item.title}
-                    // image={item.image} 
-                    location={item.short_address} price={item.rate_monthly} />
+                        // image={item.image} 
+                        location={item.short_address} price={item.rate_monthly} />
                 </TouchableOpacity>
             );
         })
@@ -100,22 +83,7 @@ class ListingView extends Component {
         );
     }
 }
-ListingView.navigationOptions = ({navigation}) => ({
-    header: (
-      <Header style={{backgroundColor: '#000000'}}>
-        <StatusBar backgroundColor="#000000" barStyle="light-content" />
-        <Left>
-          <Button transparent onPress={() => navigation.openDrawer()}>
-            <Icon name="menu" />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Home</Title>
-        </Body>
-        <Right />
-      </Header>
-    ),
-  });
+
 
 class CardView extends Component {
     render() {
@@ -132,22 +100,50 @@ class CardView extends Component {
     }
 }
 
-const ListNavigator = createStackNavigator(
-    {
-        ListingView: {
-            screen: ListingView,
-            navigationOptions: {
-                headerShown: false,
-            }
-        },
-        SingleListView: {
-            screen: SingleListView,
-            navigationOptions: {
-                title: 'Details',
-                headerShown: true,
-            }
-        }
-    }
-);
+// export default (DrawNav = createStackNavigator(
+//     // {
+//     //     ListingView: {
+//     //         screen: ListingView,
+//     //         navigationOptions: {
+//     //             headerShown: true,
+//     //         }
+//     //     },
+//     //     SingleListView: {
+//     //         screen: SingleListView,
+//     //         navigationOptions: {
+//     //             title: 'Details',
+//     //             headerShown: true,
+//     //         }
+//     //     }
+//     // },
+//     // {
+//     //     initialRouteName: 'ListingView',
+//     // }
+//     {
+//         ListingView: {screen: ListingView}
+//     },
+//     {
+//         initialRouteName: 'ListingView'
+//     }
+// ));
 
-export default createAppContainer(ListNavigator);
+// export default createAppContainer(ListNavigator);
+
+ListingView.navigationOptions = ({ navigation }) => ({
+    header: (
+        <Header style={{ backgroundColor: '#000000' }}>
+            <StatusBar backgroundColor="#fff" barStyle="light-content" />
+            <Left>
+                <Button transparent onPress={() => navigation.toggleDrawer()}>
+                    <Icon style={{ color: '#ffffff' }} name="menu" />
+                </Button>
+            </Left>
+            <Body>
+                <Title>Home</Title>
+            </Body>
+            <Right />
+        </Header>
+    ),
+});
+
+export default withNavigationFocus(ListingView);
