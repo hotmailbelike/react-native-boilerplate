@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "reload": "adb shell input keyboard text \"RR\"",
+    "shake": "adb shell input keyevent 82"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",

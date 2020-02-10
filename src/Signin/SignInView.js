@@ -13,9 +13,10 @@ import {
   Root,
   Form,
   Item,
-  Input,Text
+  Input,
+  Text,
+  AsyncStorage,
 } from 'native-base';
-
 
 export default class SignInView extends React.Component {
   static navigationOptions = {
@@ -32,46 +33,89 @@ export default class SignInView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: '',
-      lastName:'',
-      email:'',
-      password:''
+      // firstName: '',
+      // lastName: '',
+      email: '',
+      password: '',
     };
   }
   // form validation
-  validate = (text,key)=>{
+  validate = (text, key) => {
     //console.log(text)
-    console.log(key)
+    console.log(key);
     //this.state[key] accessing state through key
-    }
+  };
 
-  //send user sign in data to database 
-  handSubmit = ()=>{
-    console.log(this.state)
-  }
+  //send user sign in data to database
+  handleSubmit = () => {
+    const signInDetails = this.state;
+    // const signInDetails = {
+    //   email: 'run@run.com',
+    //   password: 'run12345',
+    // };
+    console.log(signInDetails);
+    fetch('https://rentalvr.herokuapp.com/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(signInDetails),
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          // console.log(result);
+          // console.log(result.token);
+          const storeToken = async () => {
+            try {
+              await AsyncStorage.setItem('token', result.token);
+            } catch (e) {
+              console.log(e);
+            }
+          };
+        },
+        e => {
+          console.log(e);
+        },
+      );
+  };
 
   render() {
     return (
       <Root>
         <Container>
           <Content>
-          <Form>
-            <Item style = {{marginBottom:10}}>
-              <Input placeholder="First Name" onChangeText={(text)=>this.validate(text,'firstName')}/>
-            </Item>
-            <Item style = {{marginBottom:10}}>
-              <Input placeholder="Last Name" onChangeText={(text)=>this.validate(text,'lastName')} />
-            </Item>
-            <Item style = {{marginBottom:10}}>
-              <Input placeholder="Email" onChangeText={(text)=>this.validate(text,'email')} />
-            </Item>
-            <Item style = {{marginBottom:10}}>
-              <Input  placeholder="Password" secureTextEntry={true} onChangeText={(text)=>this.validate(text,'password')} />
-            </Item>
-            <Button block danger onPress = {this.handSubmit}>
-              <Text>Sign In</Text>
-            </Button>
-          </Form>
+            <Form>
+              {/* <Item style={{marginBottom: 10}}>
+                <Input
+                  placeholder="First Name"
+                  onChangeText={text => this.validate(text, 'firstName')}
+                />
+              </Item>
+              <Item style={{marginBottom: 10}}>
+                <Input
+                  placeholder="Last Name"
+                  onChangeText={text => this.validate(text, 'lastName')}
+                />
+              </Item> */}
+              <Item style={{marginBottom: 10}}>
+                <Input
+                  placeholder="Email"
+                  onChangeText={text => this.setState({email: text})}
+                />
+              </Item>
+              <Item style={{marginBottom: 10}}>
+                <Input
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  onChangeText={text => this.setState({password: text})}
+                />
+              </Item>
+              <Button block danger onPress={this.handleSubmit}>
+                <Text>Sign In</Text>
+              </Button>
+            </Form>
           </Content>
         </Container>
       </Root>
