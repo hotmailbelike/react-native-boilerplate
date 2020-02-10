@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Image, StatusBar, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, StatusBar, TouchableOpacity} from 'react-native';
 import {
   Container,
   Header,
@@ -16,6 +16,8 @@ import {
   Thumbnail,
   Root,
   Title,
+  Item,
+  View,
 } from 'native-base';
 import {createAppContainer, withNavigationFocus} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -113,6 +115,20 @@ class ListingView extends Component {
     return (
       <Root>
         <Container>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{width: '70%'}} searchBar rounded>
+              <Item>
+                <Icon name="ios-search" />
+                <Input placeholder="Search" />
+                {/* <Icon name="ios-people" /> */}
+              </Item>
+            </View>
+            <View style={{width: '25%'}}>
+              <Button>
+                <Text>Search</Text>
+              </Button>
+            </View>
+          </View>
           <Content style={{padding: 5}}>{rows}</Content>
         </Container>
       </Root>
