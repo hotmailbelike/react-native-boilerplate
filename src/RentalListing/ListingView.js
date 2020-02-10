@@ -1,103 +1,138 @@
-import React, { Component } from 'react';
-import { Image, StatusBar, TouchableOpacity } from 'react-native'
+import React, {Component} from 'react';
+import {Image, StatusBar, TouchableOpacity} from 'react-native';
 import {
-    Container,
-    Header,
-    Card,
-    CardItem,
-    Content,
-    Button,
-    Left,
-    Right,
-    Body,
-    Icon,
-    Text,
-    Input,
-    Thumbnail,
-    Root,
-    Title
+  Container,
+  Header,
+  Card,
+  CardItem,
+  Content,
+  Button,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Text,
+  Input,
+  Thumbnail,
+  Root,
+  Title,
 } from 'native-base';
-import { createAppContainer, withNavigationFocus } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import {createAppContainer, withNavigationFocus} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import SingleListView from './SingleListView';
 
-
 class ListingView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rentList_dummy: [
-                { id: 1, title: "Apartment", image: "https://img.icons8.com/clouds/100/000000/groups.png", price: 28000, location: "Bashundhara" },
-                { id: 2, title: "3 Room Bed", image: "https://img.icons8.com/color/100/000000/real-estate.png", price: 25000, location: 'Uttara' },
-                { id: 3, title: "Girls Hostel", image: "https://img.icons8.com/color/100/000000/find-matching-job.png", price: 15000, location: "Bashundhara" },
-                { id: 4, title: "Flat at Uttara", image: "https://img.icons8.com/clouds/100/000000/employee-card.png", price: 35000, location: "Uttara" },
-                { id: 5, title: "Near IUB", image: "https://img.icons8.com/color/100/000000/land-sales.png", price: 25000, location: "Bashundhara" },
-            ],
-            error: null, isLoaded: false, rentList: []
-        }
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      rentList_dummy: [
+        {
+          id: 1,
+          title: 'Apartment',
+          image: 'https://img.icons8.com/clouds/100/000000/groups.png',
+          price: 28000,
+          location: 'Bashundhara',
+        },
+        {
+          id: 2,
+          title: '3 Room Bed',
+          image: 'https://img.icons8.com/color/100/000000/real-estate.png',
+          price: 25000,
+          location: 'Uttara',
+        },
+        {
+          id: 3,
+          title: 'Girls Hostel',
+          image:
+            'https://img.icons8.com/color/100/000000/find-matching-job.png',
+          price: 15000,
+          location: 'Bashundhara',
+        },
+        {
+          id: 4,
+          title: 'Flat at Uttara',
+          image: 'https://img.icons8.com/clouds/100/000000/employee-card.png',
+          price: 35000,
+          location: 'Uttara',
+        },
+        {
+          id: 5,
+          title: 'Near IUB',
+          image: 'https://img.icons8.com/color/100/000000/land-sales.png',
+          price: 25000,
+          location: 'Bashundhara',
+        },
+      ],
+      error: null,
+      isLoaded: false,
+      rentList: [],
+    };
+  }
 
-    componentDidMount() {
-        fetch('https://rentalvr.herokuapp.com/api/rentListings')
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        rentList: result
-                    })
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true, error
-                    })
-                }
-            )
-    }
+  componentDidMount() {
+    fetch('https://rentalvr.herokuapp.com/api/rentListings')
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            rentList: result,
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        },
+      );
+  }
 
-    render() {
-        const data = this.state.rentList;
-        const rows = data.map((item) => {
-            return (
-                <TouchableOpacity key={item._id.toString()} onPress={() => {
-                    this.props.navigation.navigate('SingleListView', {
-                        rentalDetails: item
-                    });
-                }}>
-                    <CardView title={item.title}
-                        // image={item.image} 
-                        location={item.short_address} price={item.rate_monthly} />
-                </TouchableOpacity>
-            );
-        })
+  render() {
+    const data = this.state.rentList;
+    const rows = data.map(item => {
+      return (
+        <TouchableOpacity
+          key={item._id.toString()}
+          onPress={() => {
+            this.props.navigation.navigate('SingleListView', {
+              rentalDetails: item,
+            });
+          }}>
+          <CardView
+            title={item.title}
+            // image={item.image}
+            location={item.short_address}
+            price={item.rate_monthly}
+          />
+        </TouchableOpacity>
+      );
+    });
 
-        return (
-            <Root>
-                <Container>
-                    <Content style={{ padding: 5 }}>
-                        {rows}
-                    </Content>
-                </Container>
-            </Root>
-        );
-    }
+    return (
+      <Root>
+        <Container>
+          <Content style={{padding: 5}}>{rows}</Content>
+        </Container>
+      </Root>
+    );
+  }
 }
 
-
 class CardView extends Component {
-    render() {
-        return (
-            <Card>
-                <CardItem>
-                    <Thumbnail source={{ uri: this.props.image }} />
-                    <Text>{this.props.title}</Text>
-                    {/* <Text>{this.props.location}</Text> */}
-                    {/* <Text>{this.props.price}</Text> */}
-                </CardItem>
-            </Card>
-        );
-    }
+  render() {
+    return (
+      <Card>
+        <CardItem>
+          <Thumbnail source={{uri: this.props.image}} />
+          <Text>{this.props.title}</Text>
+          {/* <Text>{this.props.location}</Text> */}
+          {/* <Text>{this.props.price}</Text> */}
+        </CardItem>
+      </Card>
+    );
+  }
 }
 
 // export default (DrawNav = createStackNavigator(
@@ -129,21 +164,21 @@ class CardView extends Component {
 
 // export default createAppContainer(ListNavigator);
 
-ListingView.navigationOptions = ({ navigation }) => ({
-    header: (
-        <Header style={{ backgroundColor: '#000000' }}>
-            <StatusBar backgroundColor="#fff" barStyle="light-content" />
-            <Left>
-                <Button transparent onPress={() => navigation.toggleDrawer()}>
-                    <Icon style={{ color: '#ffffff' }} name="menu" />
-                </Button>
-            </Left>
-            <Body>
-                <Title>Home</Title>
-            </Body>
-            <Right />
-        </Header>
-    ),
+ListingView.navigationOptions = ({navigation}) => ({
+  header: (
+    <Header style={{backgroundColor: '#000000'}}>
+      <StatusBar backgroundColor="#000000" barStyle="light-content" />
+      <Left>
+        <Button transparent onPress={() => navigation.toggleDrawer()}>
+          <Icon style={{color: '#ffffff'}} name="menu" />
+        </Button>
+      </Left>
+      <Body>
+        <Title>Home</Title>
+      </Body>
+      <Right />
+    </Header>
+  ),
 });
 
 export default withNavigationFocus(ListingView);
