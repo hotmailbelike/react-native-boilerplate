@@ -39,6 +39,13 @@ export default class SignInView extends React.Component {
       password: '',
     };
   }
+  storeToken = async token => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   // form validation
   validate = (text, key) => {
     //console.log(text)
@@ -53,7 +60,7 @@ export default class SignInView extends React.Component {
     //   email: 'run@run.com',
     //   password: 'run12345',
     // };
-    console.log(signInDetails);
+    // console.log(signInDetails);
     fetch('https://rentalvr.herokuapp.com/auth/signin', {
       method: 'POST',
       headers: {
@@ -65,15 +72,11 @@ export default class SignInView extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
-          console.log(result.token);
-          const storeToken = async () => {
-            try {
-              await AsyncStorage.setItem('token', result.token);
-            } catch (e) {
-              console.log(e);
-            }
-          };
+          if (!result.token) {
+            return alert('Username or Password incorrect');
+          }
+          this.storeToken(result.token);
+          this.props.navigation.navigate('ListingView');
         },
         e => {
           console.log(e);

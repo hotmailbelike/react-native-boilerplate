@@ -32,8 +32,9 @@ export default class SignInView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
+      name: '',
       email: '',
       password: '',
     };
@@ -41,7 +42,22 @@ export default class SignInView extends React.Component {
 
   //send user sign in data to database
   handSubmit = () => {
-    console.log(this.state);
+    const signUpDetails = this.state;
+    fetch('https://rentalvr.herokuapp.com/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(signUpDetails),
+    })
+      .then(res => res.json())
+      .then(result => {
+        if (result.error) {
+          return alert(result.error);
+        }
+        this.props.navigation.navigate('SignInView');
+      });
   };
 
   render() {
@@ -53,20 +69,20 @@ export default class SignInView extends React.Component {
               <Item style={{marginBottom: 10}}>
                 <Input
                   placeholder="Name"
-                  onChangeText={text => this.setState(text)}
+                  onChangeText={text => this.setState({name: text})}
                 />
               </Item>
               <Item style={{marginBottom: 10}}>
                 <Input
                   placeholder="Email"
-                  onChangeText={text => this.setState(text)}
+                  onChangeText={text => this.setState({email: text})}
                 />
               </Item>
               <Item style={{marginBottom: 10}}>
                 <Input
                   placeholder="Password"
                   secureTextEntry={true}
-                  onChangeText={text => this.setState(text)}
+                  onChangeText={text => this.setState({password: text})}
                 />
               </Item>
               <Button block danger onPress={this.handSubmit}>
