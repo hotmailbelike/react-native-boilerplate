@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StatusBar} from 'react-native';
+import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
 import {
   Container,
   Body,
@@ -14,7 +14,6 @@ import {
   Form,
   Item,
   Input,
-  Text,
   AsyncStorage,
 } from 'native-base';
 
@@ -37,6 +36,7 @@ export default class SignInView extends React.Component {
       // lastName: '',
       email: '',
       password: '',
+      error: '',
     };
   }
   storeToken = async token => {
@@ -55,11 +55,11 @@ export default class SignInView extends React.Component {
 
   //send user sign in data to database
   handleSubmit = () => {
-    const signInDetails = this.state;
-    // const signInDetails = {
-    //   email: 'run@run.com',
-    //   password: 'run12345',
-    // };
+    const signInDetails = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
     // console.log(signInDetails);
     fetch('https://rentalvr.herokuapp.com/auth/signin', {
       method: 'POST',
@@ -73,7 +73,9 @@ export default class SignInView extends React.Component {
       .then(
         result => {
           if (!result.token) {
-            return alert('Username or Password incorrect');
+            return this.setState({error: result.error}, () => {
+              console.log(this.state.error);
+            });
           }
           this.storeToken(result.token);
           this.props.navigation.navigate('ListingView');
@@ -90,18 +92,6 @@ export default class SignInView extends React.Component {
         <Container>
           <Content>
             <Form>
-              {/* <Item style={{marginBottom: 10}}>
-                <Input
-                  placeholder="First Name"
-                  onChangeText={text => this.validate(text, 'firstName')}
-                />
-              </Item>
-              <Item style={{marginBottom: 10}}>
-                <Input
-                  placeholder="Last Name"
-                  onChangeText={text => this.validate(text, 'lastName')}
-                />
-              </Item> */}
               <Item style={{marginBottom: 10}}>
                 <Input
                   placeholder="Email"
@@ -115,6 +105,13 @@ export default class SignInView extends React.Component {
                   onChangeText={text => this.setState({password: text})}
                 />
               </Item>
+
+              <View style={this.state.error && styles.signInError}>
+                <Text style={{color: '#ff0000'}}>
+                  {this.state.error && this.state.error}
+                </Text>
+              </View>
+
               <Button block danger onPress={this.handleSubmit}>
                 <Text>Sign In</Text>
               </Button>
@@ -141,4 +138,11 @@ SignInView.navigationOptions = ({navigation}) => ({
       <Right />
     </Header>
   ),
+});
+
+const styles = StyleSheet.create({
+  signInError: {
+    alignItems: 'center',
+    marginBottom: 5,
+  },
 });

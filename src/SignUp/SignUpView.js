@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StatusBar} from 'react-native';
+import {View, Image, StatusBar, StyleSheet} from 'react-native';
 import {
   Container,
   Body,
@@ -37,12 +37,17 @@ export default class SignInView extends React.Component {
       name: '',
       email: '',
       password: '',
+      error: '',
     };
   }
 
   //send user sign in data to database
   handSubmit = () => {
-    const signUpDetails = this.state;
+    const signUpDetails = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
     fetch('https://rentalvr.herokuapp.com/api/users', {
       method: 'POST',
       headers: {
@@ -54,7 +59,9 @@ export default class SignInView extends React.Component {
       .then(res => res.json())
       .then(result => {
         if (result.error) {
-          return alert(result.error);
+          return this.setState({error: result.error}, () => {
+            console.log(this.state.error);
+          });
         }
         this.props.navigation.navigate('SignInView');
       });
@@ -85,6 +92,11 @@ export default class SignInView extends React.Component {
                   onChangeText={text => this.setState({password: text})}
                 />
               </Item>
+              <View style={this.state.error && styles.signInError}>
+                <Text style={{color: '#ff0000'}}>
+                  {this.state.error && this.state.error}
+                </Text>
+              </View>
               <Button block danger onPress={this.handSubmit}>
                 <Text>Sign Up</Text>
               </Button>
@@ -111,4 +123,12 @@ SignInView.navigationOptions = ({navigation}) => ({
       <Right />
     </Header>
   ),
+});
+
+const styles = StyleSheet.create({
+  signInError: {
+    color: 'rgb(255,0,0)',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
 });

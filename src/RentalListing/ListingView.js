@@ -73,18 +73,24 @@ class ListingView extends Component {
   }
 
   componentDidMount() {
-    fetch('https://rentalvr.herokuapp.com/api/rentListings')
+    fetch('https://rentalvr.herokuapp.com/api/rentListings', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
       .then(res => res.json())
       .then(
         result => {
           this.setState({
             isLoaded: true,
-            rentList: result,
+            rentList: result.map(list => ({id: list._id, title: list.title})),
           });
         },
         error => {
           this.setState({
-            isLoaded: true,
+            isLoaded: false,
             error,
           });
         },
@@ -93,20 +99,22 @@ class ListingView extends Component {
 
   render() {
     const data = this.state.rentList;
+    // console.log(data);
+
     const rows = data.map(item => {
       return (
         <TouchableOpacity
-          key={item._id.toString()}
+          key={item.id.toString()}
           onPress={() => {
             this.props.navigation.navigate('SingleListView', {
-              rentalDetails: item,
+              rentId: item.id,
             });
           }}>
           <CardView
             title={item.title}
             // image={item.image}
-            location={item.short_address}
-            price={item.rate_monthly}
+            // location={item.short_address}
+            // price={item.rate_monthly}
           />
         </TouchableOpacity>
       );
