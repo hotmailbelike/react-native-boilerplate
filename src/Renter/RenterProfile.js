@@ -36,12 +36,23 @@ export default class RenterProfile extends React.Component {
       <Root>
         <Container>
           <Content>
-            <Text>Name</Text>
+            <Text>Category</Text>
             
             <Item>
-            <Input placeholder="Underline Textbox" />
+            <Input placeholder="Enter Category" />
           </Item>
-          
+           <Text>Short Address</Text>
+            <Item>
+              <Input placeholder = "Enter Address"/>
+            </Item>
+            <Text>Long Address</Text>
+            <Item>
+              <Input placeholder = "Enter Address"/>
+            </Item>
+            <Text>Rate(Monthly)</Text>
+            <Item>
+              <Input placeholder = "Enter Amount"/>
+            </Item>
             
           </Content>
           
