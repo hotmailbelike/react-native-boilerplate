@@ -14,6 +14,9 @@ import {
   Button,
   Text,
   Root,
+  Input,
+  Item
+  
 } from 'native-base';
 //import { withNavigationFocus } from 'react-navigation'
 
@@ -33,8 +36,15 @@ export default class RenterProfile extends React.Component {
       <Root>
         <Container>
           <Content>
-            <Text>Renter</Text>
+            <Text>Name</Text>
+            
+            <Item>
+            <Input placeholder="Underline Textbox" />
+          </Item>
+          
+            
           </Content>
+          
         </Container>
       </Root>
     );
@@ -52,6 +62,7 @@ RenterProfile.navigationOptions = ({navigation}) => ({
       </Left>
       <Body>
         <Title>RenterProfile</Title>
+        
       </Body>
       <Right />
     </Header>

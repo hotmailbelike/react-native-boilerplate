@@ -112,9 +112,9 @@ export default class SignInView extends React.Component {
                   onChangeText={text => this.setState({password: text})}
                 />
               </Item>
-              {/* <Button block danger onPress={this.handleSubmit}>
+              <Button block danger onPress={this.handleSubmit}>
                 <Text>Sign In</Text>
-              </Button> */}
+              </Button>
 
                   {/* <TouchableOpacity
                     onPress={() => {
@@ -122,11 +122,11 @@ export default class SignInView extends React.Component {
                            }} >
                          <Text>Sign IN</Text>
                     </TouchableOpacity> */}
-                  <Button  onPress={() => {
+                  {/* <Button  onPress={() => {
                       this.props.navigation.navigate('UserAccount');
                            }} >
                            <Text>Sign IN</Text>
-                    </Button>
+                    </Button> */}
           
 
             </Form>
