@@ -38,7 +38,7 @@ class ListingView extends Component {
     };
   }
 
-  componentDidMount() {
+  fetchListing = () => {
     fetch('https://rentalvr.herokuapp.com/api/rentListings', {
       method: 'GET',
       headers: {
@@ -61,11 +61,34 @@ class ListingView extends Component {
           });
         },
       );
+  };
+
+  componentDidMount() {
+    this.fetchListing();
   }
 
   handleSearch = () => {
-    const searchQuery = this.state.searchQuery;
-    
+    const searchTerm = {searchTerm: this.state.searchQuery};
+    fetch('https://rentalvr.herokuapp.com/api/rentListings/generalSearch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(searchTerm),
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            rentList: result.map(list => ({id: list._id, title: list.title})),
+          });
+        },
+        error => {
+          this.setState({isLoaded: false, error});
+        },
+      );
   };
 
   render() {
@@ -100,7 +123,11 @@ class ListingView extends Component {
                 <Icon name="ios-search" />
                 <Input
                   placeholder="Search"
-                  onChangeText={text => this.setState({searchQuery: text})}
+                  onChangeText={text => {
+                    text
+                      ? this.setState({searchQuery: text})
+                      : this.fetchListing();
+                  }}
                 />
                 {/* <Icon name="ios-people" /> */}
               </Item>
