@@ -67,6 +67,8 @@ export default class SignInView extends React.Component {
         result => {
           console.log(result);
           console.log(result.token);
+          console.log('That was token');
+
           const storeToken = async () => {
             try {
               await AsyncStorage.setItem('token', result.token);

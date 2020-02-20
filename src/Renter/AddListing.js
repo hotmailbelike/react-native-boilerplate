@@ -15,12 +15,51 @@ import {
   Text,
   Root,
   Input,
-  Item
+  Item,
+
   
 } from 'native-base';
 //import { withNavigationFocus } from 'react-navigation'
 
 export default class RenterProfile extends React.Component {
+
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      // firstName: '',
+      // lastName: '',
+      category: '',
+      short_address: '',
+      long_address: '',
+      rate: '',
+    };
+  }
+
+  handleSubmit = () => {
+    const listingDetails = this.state;
+    // const signInDetails = {
+    //   email: 'run@run.com',
+    //   password: 'run12345',
+    // };
+    console.log(listingDetails);
+    fetch('https://rentalvr.herokuapp.com/api/rentListings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(listingDetails),
+    })
+      .then((response) => response.json())
+    .then((responseJson) => {
+      console.log("Added New Listing" );
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  };
+
   static navigationOptions = {
     drawerLabel: 'Renter Profile',
     drawerIcon: ({tintColor}) => (
@@ -39,20 +78,32 @@ export default class RenterProfile extends React.Component {
             <Text>Category</Text>
             
             <Item>
-            <Input placeholder="Enter Category" />
+            <Input placeholder="Enter Category"
+            onChangeText={text => this.setState({category: text})}
+             />
           </Item>
            <Text>Short Address</Text>
             <Item>
-              <Input placeholder = "Enter Address"/>
+              <Input placeholder = "Enter Address"
+               onChangeText={text => this.setState({short_address: text})}
+              />
             </Item>
             <Text>Long Address</Text>
             <Item>
-              <Input placeholder = "Enter Address"/>
+              <Input placeholder = "Enter Address"
+              onChangeText={text => this.setState({long_address: text})}            
+              />
             </Item>
             <Text>Rate(Monthly)</Text>
             <Item>
-              <Input placeholder = "Enter Amount"/>
+              <Input placeholder = "Enter Amount"
+               onChangeText={text => this.setState({rate: text})}
+            />
             </Item>
+
+            <Button onPress={this.handleSubmit}>
+                <Text>Submit</Text>
+              </Button>
             
           </Content>
           
