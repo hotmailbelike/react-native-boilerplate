@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   /* StyleSheet, Image, */ StatusBar,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import {
   Container,
@@ -36,10 +37,12 @@ class ListingView extends Component {
       rentList: [],
       searchQuery: '',
       searchResult: [],
+      refresh: false,
     };
   }
 
-  componentDidMount() {
+  renderList = () => {
+    this.setState({searchResult: []});
     fetch('https://rentalvr.herokuapp.com/api/rentListings', {
       method: 'GET',
       headers: {
@@ -62,25 +65,41 @@ class ListingView extends Component {
           });
         },
       );
+  };
+
+  componentDidMount() {
+    this.renderList();
+  }
+
+  onRefresh() {
+    this.setState({refresh: true});
+    setTimeout(() => {
+      this.renderList();
+      this.setState({refresh: false});
+    }, 1000);
   }
 
   toBeRendered = renderItems => {
     return renderItems.map(item => {
       return (
-        <TouchableOpacity
-          key={item.id.toString()}
-          onPress={() => {
-            this.props.navigation.navigate('SingleListView', {
-              rentId: item.id,
-            });
-          }}>
-          <CardView
-            title={item.title}
-            // image={item.image}
-            // location={item.short_address}
-            // price={item.rate_monthly}
-          />
-        </TouchableOpacity>
+        <RefreshControl
+          refreshing={this.state.refresh}
+          onRefresh={() => this.onRefresh()}>
+          <TouchableOpacity
+            key={item.id.toString()}
+            onPress={() => {
+              this.props.navigation.navigate('SingleListView', {
+                rentId: item.id,
+              });
+            }}>
+            <CardView
+              title={item.title}
+              // image={item.image}
+              // location={item.short_address}
+              // price={item.rate_monthly}
+            />
+          </TouchableOpacity>
+        </RefreshControl>
       );
     });
   };
