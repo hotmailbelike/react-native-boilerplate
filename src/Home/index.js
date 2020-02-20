@@ -8,7 +8,7 @@ import AboutView from '../About/index';
 import HelpView from '../Help/index';
 import ListingView from '../RentalListing/index';
 import SignUpView from '../SignUp/index';
-
+import RenterProfile from '../Renter/index';
 const HomeRouter = createDrawerNavigator(
   {
     ListingView: {
@@ -29,7 +29,11 @@ const HomeRouter = createDrawerNavigator(
     SignUpView: {
       screen: SignUpView,
     },
+    RenterProfile: {
+      screen: RenterProfile,
+    },
   },
+
   {
     initialRouteName: 'ListingView',
     // headerMode: 'none',

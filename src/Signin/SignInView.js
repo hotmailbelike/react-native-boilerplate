@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
+import {Image, StatusBar, TouchableOpacity} from 'react-native';
 import {
   Container,
   Body,
@@ -115,6 +115,18 @@ export default class SignInView extends React.Component {
               <Button block danger onPress={this.handleSubmit}>
                 <Text>Sign In</Text>
               </Button>
+
+              {/* <TouchableOpacity
+                    onPress={() => {
+                      this.props.navigation.navigate('UserAccount');
+                           }} >
+                         <Text>Sign IN</Text>
+                    </TouchableOpacity> */}
+              {/* <Button  onPress={() => {
+                      this.props.navigation.navigate('UserAccount');
+                           }} >
+                           <Text>Sign IN</Text>
+                    </Button> */}
             </Form>
           </Content>
         </Container>

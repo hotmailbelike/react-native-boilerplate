@@ -4,11 +4,14 @@ import SignInView from './SignInView';
 import AboutView from '../About/AboutView';
 import HelpView from '../Help/HelpView';
 
+
+
 export default Drawnav = createStackNavigator(
   {
     SignInView: { screen: SignInView },
     AboutView: { screen: AboutView },
-    HelpView: { screen: HelpView }
+    HelpView: { screen: HelpView },
+    // UserAccount: {screen: UserAccount},
   },
 
   {
