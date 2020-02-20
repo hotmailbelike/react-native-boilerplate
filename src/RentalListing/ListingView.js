@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet, Image, StatusBar, TouchableOpacity} from 'react-native';
+import {
+  /* StyleSheet, Image, */ StatusBar,
+  TouchableOpacity,
+} from 'react-native';
 import {
   Container,
   Header,
@@ -19,56 +22,19 @@ import {
   Item,
   View,
 } from 'native-base';
-import {createAppContainer, withNavigationFocus} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import {/* createAppContainer, */ withNavigationFocus} from 'react-navigation';
+// import {createStackNavigator} from 'react-navigation-stack';
 
-import SingleListView from './SingleListView';
+// import SingleListView from './SingleListView';
 
 class ListingView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rentList_dummy: [
-        {
-          id: 1,
-          title: 'Apartment',
-          image: 'https://img.icons8.com/clouds/100/000000/groups.png',
-          price: 28000,
-          location: 'Bashundhara',
-        },
-        {
-          id: 2,
-          title: '3 Room Bed',
-          image: 'https://img.icons8.com/color/100/000000/real-estate.png',
-          price: 25000,
-          location: 'Uttara',
-        },
-        {
-          id: 3,
-          title: 'Girls Hostel',
-          image:
-            'https://img.icons8.com/color/100/000000/find-matching-job.png',
-          price: 15000,
-          location: 'Bashundhara',
-        },
-        {
-          id: 4,
-          title: 'Flat at Uttara',
-          image: 'https://img.icons8.com/clouds/100/000000/employee-card.png',
-          price: 35000,
-          location: 'Uttara',
-        },
-        {
-          id: 5,
-          title: 'Near IUB',
-          image: 'https://img.icons8.com/color/100/000000/land-sales.png',
-          price: 25000,
-          location: 'Bashundhara',
-        },
-      ],
       error: null,
       isLoaded: false,
       rentList: [],
+      searchQuery: '',
     };
   }
 
@@ -96,6 +62,11 @@ class ListingView extends Component {
         },
       );
   }
+
+  handleSearch = () => {
+    const searchQuery = this.state.searchQuery;
+    
+  };
 
   render() {
     const data = this.state.rentList;
@@ -127,12 +98,15 @@ class ListingView extends Component {
             <View style={{width: '70%'}} searchBar rounded>
               <Item>
                 <Icon name="ios-search" />
-                <Input placeholder="Search" />
+                <Input
+                  placeholder="Search"
+                  onChangeText={text => this.setState({searchQuery: text})}
+                />
                 {/* <Icon name="ios-people" /> */}
               </Item>
             </View>
             <View style={{width: '25%'}}>
-              <Button>
+              <Button onPress={this.handleSearch}>
                 <Text>Search</Text>
               </Button>
             </View>
@@ -149,7 +123,7 @@ class CardView extends Component {
     return (
       <Card>
         <CardItem>
-          <Thumbnail source={{uri: this.props.image}} />
+          {/* <Thumbnail source={{uri: this.props.image}} /> */}
           <Text>{this.props.title}</Text>
           {/* <Text>{this.props.location}</Text> */}
           {/* <Text>{this.props.price}</Text> */}
