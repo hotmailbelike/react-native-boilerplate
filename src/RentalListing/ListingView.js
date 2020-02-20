@@ -35,10 +35,11 @@ class ListingView extends Component {
       isLoaded: false,
       rentList: [],
       searchQuery: '',
+      searchResult: [],
     };
   }
 
-  fetchListing = () => {
+  componentDidMount() {
     fetch('https://rentalvr.herokuapp.com/api/rentListings', {
       method: 'GET',
       headers: {
@@ -61,41 +62,10 @@ class ListingView extends Component {
           });
         },
       );
-  };
-
-  componentDidMount() {
-    this.fetchListing();
   }
 
-  handleSearch = () => {
-    const searchTerm = {searchTerm: this.state.searchQuery};
-    fetch('https://rentalvr.herokuapp.com/api/rentListings/generalSearch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(searchTerm),
-    })
-      .then(res => res.json())
-      .then(
-        result => {
-          this.setState({
-            isLoaded: true,
-            rentList: result.map(list => ({id: list._id, title: list.title})),
-          });
-        },
-        error => {
-          this.setState({isLoaded: false, error});
-        },
-      );
-  };
-
-  render() {
-    const data = this.state.rentList;
-    // console.log(data);
-
-    const rows = data.map(item => {
+  toBeRendered = renderItems => {
+    return renderItems.map(item => {
       return (
         <TouchableOpacity
           key={item.id.toString()}
@@ -113,6 +83,43 @@ class ListingView extends Component {
         </TouchableOpacity>
       );
     });
+  };
+
+  handleSearch = () => {
+    const searchTerm = {searchTerm: this.state.searchQuery};
+    fetch('https://rentalvr.herokuapp.com/api/rentListings/generalSearch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(searchTerm),
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            searchResult: result.map(list => ({
+              id: list._id,
+              title: list.title,
+            })),
+          });
+        },
+        error => {
+          this.setState({isLoaded: false, error});
+        },
+      );
+  };
+
+  render() {
+    // console.log('rentList: ', this.state.rentList);
+    // console.log('searchResult: ', this.state.searchResult);
+    // console.log('query: ', this.state.searchQuery);
+    const rows =
+      this.state.searchResult.length > 0
+        ? this.toBeRendered(this.state.searchResult)
+        : this.toBeRendered(this.state.rentList);
 
     return (
       <Root>
@@ -123,11 +130,11 @@ class ListingView extends Component {
                 <Icon name="ios-search" />
                 <Input
                   placeholder="Search"
-                  onChangeText={text => {
-                    text
-                      ? this.setState({searchQuery: text})
-                      : this.fetchListing();
-                  }}
+                  onChangeText={text =>
+                    text === ''
+                      ? this.setState({searchResult: []})
+                      : this.setState({searchQuery: text})
+                  }
                 />
                 {/* <Icon name="ios-people" /> */}
               </Item>
