@@ -29,10 +29,18 @@ export default class RenterProfile extends React.Component {
     this.state = {
       // firstName: '',
       // lastName: '',
-      category: '',
+      _id:'5e37ccfbc3bf660017f525c9',
+      renter_name:'',
+      title:'',
+      category:'',
       short_address: '',
       long_address: '',
-      rate: '',
+      rate_monthly: '',
+      conditions:'',
+      status:'true',
+      description:'',
+      created:'',
+      renter:'',
     };
   }
 
@@ -53,10 +61,10 @@ export default class RenterProfile extends React.Component {
     })
       .then((response) => response.json())
     .then((responseJson) => {
-      console.log("Added New Listing" );
+      console.log(responseJson );
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
     });
   };
 
