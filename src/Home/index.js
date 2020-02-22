@@ -9,6 +9,8 @@ import HelpView from '../Help/index';
 import ListingView from '../RentalListing/index';
 import SignUpView from '../SignUp/index';
 import RenterProfile from '../Renter/index';
+import SpecificSearch from '../Search/index';
+
 const HomeRouter = createDrawerNavigator(
   {
     ListingView: {
@@ -31,6 +33,9 @@ const HomeRouter = createDrawerNavigator(
     },
     RenterProfile: {
       screen: RenterProfile,
+    },
+    SpecificSearch: {
+      screen: SpecificSearch,
     },
   },
 

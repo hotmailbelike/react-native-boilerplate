@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  StatusBar,
+  AsyncStorage,
+} from 'react-native';
 import {
   Container,
   Body,
@@ -14,7 +21,6 @@ import {
   Form,
   Item,
   Input,
-  AsyncStorage,
 } from 'native-base';
 
 export default class SignInView extends React.Component {
