@@ -42,18 +42,9 @@ export default class RenterProfile extends React.Component {
     };
   }
 
-  getToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      console.log('getting:', token);
-      return token;
-    } catch (error) {
-      console.log('gettoken error: ', error);
-    }
-  };
-
   handleSubmit = async () => {
-    const token = await AsyncStorage.getItem('token');
+    let userInfo = await AsyncStorage.getItem('userInfo');
+    userInfo = JSON.parse(userInfo);
     const listingDetails = this.state;
     // console.log(listingDetails);
     // const token = this.getToken();
@@ -62,7 +53,7 @@ export default class RenterProfile extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer ' + userInfo.token,
       },
       credentials: 'include',
       body: JSON.stringify(listingDetails),

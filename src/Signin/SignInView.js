@@ -41,14 +41,15 @@ export default class SignInView extends React.Component {
       error: '',
     };
   }
-  storeToken = async token => {
+  storeUserInfo = async userInfo => {
     try {
-      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
       // console.log('Token-> ', token);
     } catch (e) {
       console.log(e);
     }
   };
+
   // form validation
   validate = (text, key) => {
     //console.log(text)
@@ -80,8 +81,10 @@ export default class SignInView extends React.Component {
               console.log(this.state.error);
             });
           }
-          this.storeToken(result.token);
-          console.log(result.token);
+          // this.storeUserInfo(result.token);
+          // this.storeUserId(result.user._id);
+          this.storeUserInfo(result);
+          // console.log(result.token);
           this.props.navigation.navigate('ListingView');
         },
         e => {

@@ -7,6 +7,8 @@ import {
   Thumbnail,
 } from 'native-base';
 
+import AsyncStorage from '@react-native-community/async-storage';
+
 export default class SingleListView extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +16,30 @@ export default class SingleListView extends Component {
       rentDetails: [],
     };
   }
+
+  handleInterest = async () => {
+    let userInfo = await AsyncStorage.getItem('userInfo');
+    userInfo = JSON.parse(userInfo);
+    const token = userInfo.token;
+    const userId = userInfo.user._id;
+    console.log(token);
+    console.log(userId);
+    const {navigation} = this.props;
+    const rentId = navigation.getParam('rentId', 'rentId');
+    fetch(
+      'https://rentalvr.herokuapp.com/api/rentListings/showInterest/' + rentId,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.trim(),
+        },
+        credentials: 'include',
+      },
+    )
+      .then(res => res.json())
+      .catch(e => console.log(e));
+  };
 
   componentDidMount() {
     const {navigation} = this.props;
@@ -45,11 +71,12 @@ export default class SingleListView extends Component {
         <Text> {rentDetails.rate_monthly} </Text>
         {/* <Thumbnail source={{uri: rentDetails.image}} /> */}
         <Text> {rentDetails.short_address} </Text>
-        <Button  onPress={() => {
-                      this.props.navigation.navigate('');
-                           }} >
-                           <Text>Interested</Text>
-                    </Button>
+        <Button
+          onPress={() => {
+            this.handleInterest();
+          }}>
+          <Text>Interested</Text>
+        </Button>
       </Container>
     );
   }
