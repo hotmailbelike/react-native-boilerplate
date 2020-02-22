@@ -7,7 +7,6 @@ import {
   Footer,
   FooterTab,
   Button,
-  Icon,
   Left,
   Right,
   Body,

@@ -45,6 +45,11 @@ export default class SingleListView extends Component {
         <Text> {rentDetails.rate_monthly} </Text>
         {/* <Thumbnail source={{uri: rentDetails.image}} /> */}
         <Text> {rentDetails.short_address} </Text>
+        <Button  onPress={() => {
+                      this.props.navigation.navigate('');
+                           }} >
+                           <Text>Interested</Text>
+                    </Button>
       </Container>
     );
   }
