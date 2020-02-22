@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StatusBar,TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, Image, StatusBar, AsyncStorage} from 'react-native';
 import {
   Container,
   Body,
@@ -13,9 +13,7 @@ import {
   Root,
   Form,
   Item,
-  Input,
-  Text,
-  AsyncStorage,
+  Input
 } from 'native-base';
 
 export default class SignInView extends React.Component {
@@ -37,8 +35,17 @@ export default class SignInView extends React.Component {
       // lastName: '',
       email: '',
       password: '',
+      error: '',
     };
   }
+  storeToken = async token => {
+    try {
+      await AsyncStorage.setItem('token', token);
+      console.log('Token-> ',token)
+    } catch (e) {
+      console.log(e);
+    }
+  };
   // form validation
   validate = (text, key) => {
     //console.log(text)
@@ -48,12 +55,12 @@ export default class SignInView extends React.Component {
 
   //send user sign in data to database
   handleSubmit = () => {
-    const signInDetails = this.state;
-    // const signInDetails = {
-    //   email: 'run@run.com',
-    //   password: 'run12345',
-    // };
-    console.log(signInDetails);
+    const signInDetails = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    // console.log(signInDetails);
     fetch('https://rentalvr.herokuapp.com/auth/signin', {
       method: 'POST',
       headers: {
@@ -65,17 +72,13 @@ export default class SignInView extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
-          console.log(result.token);
-          console.log('That was token');
-
-          const storeToken = async () => {
-            try {
-              await AsyncStorage.setItem('token', result.token);
-            } catch (e) {
-              console.log(e);
-            }
-          };
+          if (!result.token) {
+            return this.setState({error: result.error}, () => {
+              console.log(this.state.error);
+            });
+          }
+          this.storeToken(result.token);
+          this.props.navigation.navigate('ListingView');
         },
         e => {
           console.log(e);
@@ -89,18 +92,6 @@ export default class SignInView extends React.Component {
         <Container>
           <Content>
             <Form>
-              {/* <Item style={{marginBottom: 10}}>
-                <Input
-                  placeholder="First Name"
-                  onChangeText={text => this.validate(text, 'firstName')}
-                />
-              </Item>
-              <Item style={{marginBottom: 10}}>
-                <Input
-                  placeholder="Last Name"
-                  onChangeText={text => this.validate(text, 'lastName')}
-                />
-              </Item> */}
               <Item style={{marginBottom: 10}}>
                 <Input
                   placeholder="Email"
@@ -114,23 +105,28 @@ export default class SignInView extends React.Component {
                   onChangeText={text => this.setState({password: text})}
                 />
               </Item>
+
+              <View style={this.state.error && styles.signInError}>
+                <Text style={{color: '#ff0000'}}>
+                  {this.state.error && this.state.error}
+                </Text>
+              </View>
+
               <Button block danger onPress={this.handleSubmit}>
                 <Text>Sign In</Text>
               </Button>
 
-                  {/* <TouchableOpacity
+              {/* <TouchableOpacity
                     onPress={() => {
                       this.props.navigation.navigate('UserAccount');
                            }} >
                          <Text>Sign IN</Text>
                     </TouchableOpacity> */}
-                  {/* <Button  onPress={() => {
+              {/* <Button  onPress={() => {
                       this.props.navigation.navigate('UserAccount');
                            }} >
                            <Text>Sign IN</Text>
                     </Button> */}
-          
-
             </Form>
           </Content>
         </Container>
@@ -154,4 +150,11 @@ SignInView.navigationOptions = ({navigation}) => ({
       <Right />
     </Header>
   ),
+});
+
+const styles = StyleSheet.create({
+  signInError: {
+    alignItems: 'center',
+    marginBottom: 5,
+  },
 });
