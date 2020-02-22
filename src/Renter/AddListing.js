@@ -1,9 +1,10 @@
 import React from 'react';
 import {Image, StatusBar} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {
   Container,
-  Card,
-  CardItem,
+  /* Card,
+  CardItem, */
   Body,
   Content,
   Header,
@@ -16,56 +17,63 @@ import {
   Root,
   Input,
   Item,
-
-  
 } from 'native-base';
 //import { withNavigationFocus } from 'react-navigation'
 
 export default class RenterProfile extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
       // firstName: '',
       // lastName: '',
-      _id:'5e37ccfbc3bf660017f525c9',
-      renter_name:'',
-      title:'',
-      category:'',
+      /* _id: '5e37ccfbc3bf660017f525c9', */
+      title: '',
+      category: '',
       short_address: '',
       long_address: '',
       rate_monthly: '',
-      conditions:'',
-      status:'true',
-      description:'',
-      created:'',
-      renter:'',
+      conditions: '',
+      status: true,
+      description: '',
+      /* created: '',
+      renter: '', 
+      status: true,
+      renter_name: '', */
     };
   }
 
-  handleSubmit = () => {
+  getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      console.log('getting:', token);
+      return token;
+    } catch (error) {
+      console.log('gettoken error: ', error);
+    }
+  };
+
+  handleSubmit = async () => {
+    const token = await AsyncStorage.getItem('token');
     const listingDetails = this.state;
-    // const signInDetails = {
-    //   email: 'run@run.com',
-    //   password: 'run12345',
-    // };
-    console.log(listingDetails);
+    // console.log(listingDetails);
+    // const token = this.getToken();
+    // console.log('handle token:', token.trim());
     fetch('https://rentalvr.herokuapp.com/api/rentListings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
       credentials: 'include',
       body: JSON.stringify(listingDetails),
     })
-      .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   static navigationOptions = {
@@ -83,38 +91,62 @@ export default class RenterProfile extends React.Component {
       <Root>
         <Container>
           <Content>
+            <Text>Title</Text>
+
+            <Item>
+              <Input
+                placeholder="Enter title"
+                onChangeText={text => this.setState({title: text})}
+              />
+            </Item>
             <Text>Category</Text>
-            
+
             <Item>
-            <Input placeholder="Enter Category"
-            onChangeText={text => this.setState({category: text})}
-             />
-          </Item>
-           <Text>Short Address</Text>
+              <Input
+                placeholder="Enter Category"
+                onChangeText={text => this.setState({category: text})}
+              />
+            </Item>
+            <Text>Short Address</Text>
             <Item>
-              <Input placeholder = "Enter Address"
-               onChangeText={text => this.setState({short_address: text})}
+              <Input
+                placeholder="Enter Short Address"
+                onChangeText={text => this.setState({short_address: text})}
               />
             </Item>
             <Text>Long Address</Text>
             <Item>
-              <Input placeholder = "Enter Address"
-              onChangeText={text => this.setState({long_address: text})}            
+              <Input
+                placeholder="Enter Long Address"
+                onChangeText={text => this.setState({long_address: text})}
               />
             </Item>
             <Text>Rate(Monthly)</Text>
             <Item>
-              <Input placeholder = "Enter Amount"
-               onChangeText={text => this.setState({rate: text})}
-            />
+              <Input
+                placeholder="Enter Amount"
+                onChangeText={text => this.setState({rate_monthly: text})}
+              />
+            </Item>
+            <Text>Condition</Text>
+            <Item>
+              <Input
+                placeholder="Describe Item Condition"
+                onChangeText={text => this.setState({conditions: text})}
+              />
+            </Item>
+            <Text>Description</Text>
+            <Item>
+              <Input
+                placeholder="Describe the Item"
+                onChangeText={text => this.setState({description: text})}
+              />
             </Item>
 
             <Button onPress={this.handleSubmit}>
-                <Text>Submit</Text>
-              </Button>
-            
+              <Text>Submit</Text>
+            </Button>
           </Content>
-          
         </Container>
       </Root>
     );
@@ -132,7 +164,6 @@ RenterProfile.navigationOptions = ({navigation}) => ({
       </Left>
       <Body>
         <Title>RenterProfile</Title>
-        
       </Body>
       <Right />
     </Header>

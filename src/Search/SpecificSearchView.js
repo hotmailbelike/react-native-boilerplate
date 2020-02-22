@@ -11,7 +11,6 @@ import {
   Left,
   Right,
   Body,
-  Icon,
   Text,
 } from 'native-base';
 import {StyleSheet} from 'react-native';

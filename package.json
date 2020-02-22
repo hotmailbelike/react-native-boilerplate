@@ -12,6 +12,7 @@
     "shake": "adb shell input keyevent 82"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.8.0",
     "@react-native-community/masked-view": "^0.1.6",
     "native-base": "^2.13.8",
     "react": "16.9.0",

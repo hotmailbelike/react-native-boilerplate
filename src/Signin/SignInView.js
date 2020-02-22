@@ -1,16 +1,8 @@
 import React from 'react';
-<<<<<<< HEAD
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  StatusBar,
-  AsyncStorage,
-} from 'react-native';
-=======
-import {Text, View, StyleSheet, Image, StatusBar, AsyncStorage} from 'react-native';
->>>>>>> 9cdbe8d2a2b77913eb1cf34ae5f7c09a20d84b86
+import {Text, View, StyleSheet, Image, StatusBar} from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
   Container,
   Body,
@@ -24,11 +16,7 @@ import {
   Root,
   Form,
   Item,
-<<<<<<< HEAD
   Input,
-=======
-  Input
->>>>>>> 9cdbe8d2a2b77913eb1cf34ae5f7c09a20d84b86
 } from 'native-base';
 
 export default class SignInView extends React.Component {
@@ -56,7 +44,7 @@ export default class SignInView extends React.Component {
   storeToken = async token => {
     try {
       await AsyncStorage.setItem('token', token);
-      console.log('Token-> ',token)
+      // console.log('Token-> ', token);
     } catch (e) {
       console.log(e);
     }
@@ -93,6 +81,7 @@ export default class SignInView extends React.Component {
             });
           }
           this.storeToken(result.token);
+          console.log(result.token);
           this.props.navigation.navigate('ListingView');
         },
         e => {
