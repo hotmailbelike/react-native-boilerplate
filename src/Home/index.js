@@ -8,7 +8,7 @@ import AboutView from '../About/index';
 import HelpView from '../Help/index';
 import ListingView from '../RentalListing/index';
 import SignUpView from '../SignUp/index';
-import RenterProfile from '../Renter/index';
+import RenterProfile from '../AddListing/index';
 import SpecificSearch from '../Search/index';
 
 const HomeRouter = createDrawerNavigator(

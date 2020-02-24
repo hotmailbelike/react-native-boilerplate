@@ -154,7 +154,7 @@ RenterProfile.navigationOptions = ({navigation}) => ({
         </Button>
       </Left>
       <Body>
-        <Title>RenterProfile</Title>
+        <Title>Add New Listing</Title>
       </Body>
       <Right />
     </Header>
