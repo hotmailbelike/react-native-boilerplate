@@ -186,35 +186,6 @@ class CardView extends Component {
   }
 }
 
-// export default (DrawNav = createStackNavigator(
-//     // {
-//     //     ListingView: {
-//     //         screen: ListingView,
-//     //         navigationOptions: {
-//     //             headerShown: true,
-//     //         }
-//     //     },
-//     //     SingleListView: {
-//     //         screen: SingleListView,
-//     //         navigationOptions: {
-//     //             title: 'Details',
-//     //             headerShown: true,
-//     //         }
-//     //     }
-//     // },
-//     // {
-//     //     initialRouteName: 'ListingView',
-//     // }
-//     {
-//         ListingView: {screen: ListingView}
-//     },
-//     {
-//         initialRouteName: 'ListingView'
-//     }
-// ));
-
-// export default createAppContainer(ListNavigator);
-
 ListingView.navigationOptions = ({navigation}) => ({
   header: (
     <Header style={{backgroundColor: '#000000'}}>
@@ -225,7 +196,7 @@ ListingView.navigationOptions = ({navigation}) => ({
         </Button>
       </Left>
       <Body>
-        <Title>Home</Title>
+        <Title>Listing View</Title>
       </Body>
       <Right />
     </Header>

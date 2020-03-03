@@ -20,11 +20,12 @@ import {
   Picker,
 } from 'native-base';
 import {StatusBar, StyleSheet} from 'react-native';
+import {withNavigationFocus} from 'react-navigation';
 // import { NavigationContainer } from '@react-navigation/native';
 // import { createStackNavigator } from '@react-navigation/stack';
 //import { withNavigationFocus } from 'react-navigation'
 
-export default class SpecificSearchView extends React.Component {
+class SpecificSearchView extends React.Component {
   state = {
     category: 'apartment',
     /* area: '', */
@@ -59,7 +60,7 @@ export default class SpecificSearchView extends React.Component {
           searchTerm[key] == undefined) &&
         delete searchTerm[key],
     );
-    console.log('searchTerm ', searchTerm);
+    // console.log('searchTerm ', searchTerm);
     fetch('https://rentalvr.herokuapp.com/api/rentListings/specificSearch', {
       method: 'POST',
       headers: {
@@ -71,13 +72,14 @@ export default class SpecificSearchView extends React.Component {
       .then(res => res.json())
       .then(
         result => {
-          // this.setState({
-          //   searchResult: result.map(list => ({
-          //     id: list._id,
-          //     title: list.title,
-          //   })),
-          // });
-          // console.log('result: ', result);
+          let searchResult = result.map(list => ({
+            id: list._id,
+            title: list.title,
+          }));
+
+          this.props.navigation.navigate('SearchResultView', {
+            searchResult: searchResult,
+          });
         },
         error => {
           console.log(error);
@@ -209,3 +211,5 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
 });
+
+export default withNavigationFocus(SpecificSearchView);
