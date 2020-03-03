@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StatusBar} from 'react-native';
+import {Image, StatusBar, ToastAndroid} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   Container,
@@ -61,6 +61,10 @@ export default class RenterProfile extends React.Component {
       .then(response => response.json())
       .then(responseJson => {
         console.log(responseJson);
+        ToastAndroid.show(
+          'Your Item has been set for rent!',
+          ToastAndroid.SHORT,
+        );
       })
       .catch(error => {
         console.log(error);
