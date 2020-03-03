@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {createAppContainer} from 'react-navigation';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import SignInView from '../Signin/index';
@@ -10,6 +10,7 @@ import ListingView from '../RentalListing/index';
 import SignUpView from '../SignUp/index';
 import RenterProfile from '../AddListing/index';
 import SpecificSearch from '../Search/index';
+import SpecificSearch2 from '../SpecificSearch/index';
 
 const HomeRouter = createDrawerNavigator(
   {
@@ -36,6 +37,9 @@ const HomeRouter = createDrawerNavigator(
     },
     SpecificSearch: {
       screen: SpecificSearch,
+    },
+    SpecificSearch2: {
+      screen: SpecificSearch2,
     },
   },
 

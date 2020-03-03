@@ -10,6 +10,7 @@ const routes = [
   {name: 'Help', route: 'HelpView'},
   {name: 'Add Listing', route: 'AddListing'},
   {name: 'Search', route: 'SpecificSearchView'},
+  {name: 'SpecificSearch', route: 'GetStartedView'},
 ];
 
 export default class Sidebar extends React.Component {
