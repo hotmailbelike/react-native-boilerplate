@@ -19,6 +19,7 @@ import {
   Input,
   Root,
   Picker,
+  Icon,
 } from 'native-base';
 import {withNavigationFocus} from 'react-navigation';
 
@@ -26,7 +27,7 @@ const GetStartedView = props => {
   return (
     <View>
       <Text>Want to be more specific about what you are looking for?</Text>
-      <Button>
+      <Button onPress={() => props.navigation.navigate('InputCategoryView')}>
         <Text>Get Started</Text>
       </Button>
     </View>

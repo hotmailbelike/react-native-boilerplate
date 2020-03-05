@@ -79,19 +79,21 @@ class CardView extends Component {
   }
 }
 
-SearchResultView.navigationOptions = ({navigation}) => ({
-  header: (
-    <Header style={{backgroundColor: '#000000'}}>
-      <StatusBar backgroundColor="#000000" barStyle="light-content" />
-      <Left>
-        <Button transparent onPress={() => navigation.toggleDrawer()}>
-          <Icon style={{color: '#ffffff'}} name="menu" />
-        </Button>
-      </Left>
-      <Body>
-        <Title>Search Result</Title>
-      </Body>
-      <Right />
-    </Header>
-  ),
-});
+//dont delete code below
+
+// SearchResultView.navigationOptions = ({navigation}) => ({
+//   header: (
+//     <Header style={{backgroundColor: '#000000'}}>
+//       <StatusBar backgroundColor="#000000" barStyle="light-content" />
+//       <Left>
+//         <Button transparent onPress={() => navigation.toggleDrawer()}>
+//           <Icon style={{color: '#ffffff'}} name="menu" />
+//         </Button>
+//       </Left>
+//       <Body>
+//         <Title>Search Result</Title>
+//       </Body>
+//       <Right />
+//     </Header>
+//   ),
+// });

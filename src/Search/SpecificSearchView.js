@@ -17,6 +17,7 @@ import {
   Input,
   Root,
   Picker,
+  Icon,
 } from 'native-base';
 import {StatusBar, StyleSheet} from 'react-native';
 import {withNavigationFocus} from 'react-navigation';
@@ -43,7 +44,7 @@ class SpecificSearchView extends React.Component {
   }
   handleSearch = () => {
     // console.log('state: ', this.state);
-    const searchTerm = this.state;
+    let searchTerm = this.state;
 
     if (searchTerm.rate_monthly.$lte === '') {
       searchTerm.rate_monthly.$lte = 88888888888888888888888888888888;
