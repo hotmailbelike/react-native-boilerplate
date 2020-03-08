@@ -92,7 +92,7 @@ export default class InputRateView extends React.Component {
                 searchTerm.rate_monthly.$lte = searchTerm.rate_monthly.$gte;
               }
 
-              console.log('b4 send: ', searchTerm);
+              // console.log('b4 send: ', searchTerm);
 
               return this.props.navigation.navigate('SearchResultView', {
                 searchTerm: searchTerm,
