@@ -14,6 +14,8 @@ export default class SingleListView extends Component {
     super(props);
     this.state = {
       rentDetails: [],
+      interested: false,
+      token: '',
     };
   }
 
@@ -22,7 +24,7 @@ export default class SingleListView extends Component {
     userInfo = JSON.parse(userInfo);
     const token = userInfo.token;
     const userId = userInfo.user._id;
-    console.log(token);
+    console.log('token'+token);
     console.log(userId);
     const {navigation} = this.props;
     const rentId = navigation.getParam('rentId', 'rentId');
@@ -38,10 +40,18 @@ export default class SingleListView extends Component {
       },
     )
       .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        this.setState({interested: true})
+      })
       .catch(e => console.log(e));
   };
-
-  componentDidMount() {
+  
+  async componentDidMount() {
+    let userInfo = await AsyncStorage.getItem('userInfo');
+    userInfo = JSON.parse(userInfo);
+    const token = userInfo? userInfo.token: null
+    const userId = userInfo? userInfo.user._id: null
     const {navigation} = this.props;
     const rentId = navigation.getParam('rentId', 'rentId');
     fetch('https://rentalvr.herokuapp.com/api/rentListings/' + rentId, {
@@ -49,20 +59,30 @@ export default class SingleListView extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
+      //credentials: 'include',
     })
       .then(res => res.json())
       .then(
         result => {
-          // console.log(result);
-          this.setState({rentDetails: result});
+          console.log(result);
+          //this.setState({result:useId});
+          this.isInterested(result, userId);
+          this.setState({rentDetails: result, token:token});
+        
         },
         error => {
+          console.log(error);
           throw error;
         },
       );
   }
-
+  isInterested = (result, userId) =>
+  {
+    let found = result.interested_people.indexOf(userId) 
+    if (found != -1){
+      this.setState({interested: true});
+    }
+  }
   render() {
     const rentDetails = this.state.rentDetails;
     return (
@@ -71,12 +91,13 @@ export default class SingleListView extends Component {
         <Text> {rentDetails.rate_monthly} </Text>
         {/* <Thumbnail source={{uri: rentDetails.image}} /> */}
         <Text> {rentDetails.short_address} </Text>
-        <Button
+        {this.state.token?<Button
+          disabled={this.state.interested}
           onPress={() => {
             this.handleInterest();
           }}>
-          <Text>Interested</Text>
-        </Button>
+          <Text>{this.state.interested? "Interested" : "Show Interest"}</Text>
+        </Button>:<Text>Sign in to show interest</Text>}
       </Container>
     );
   }
