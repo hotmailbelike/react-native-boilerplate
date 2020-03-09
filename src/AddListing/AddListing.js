@@ -109,10 +109,10 @@ export default class RenterProfile extends React.Component {
                 onChangeText={text => this.setState({short_address: text})}
               />
             </Item>
-            <Text>Long Address</Text>
+            <Text>Detailed Address</Text>
             <Item>
               <Input
-                placeholder="Enter Long Address"
+                placeholder="Enter Detailed Address"
                 onChangeText={text => this.setState({long_address: text})}
               />
             </Item>

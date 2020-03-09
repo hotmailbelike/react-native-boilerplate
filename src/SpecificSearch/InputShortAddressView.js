@@ -19,10 +19,26 @@ import {
   Picker,
   Form,
 } from 'native-base';
+import {add} from 'react-native-reanimated';
 
 export default class InputShortAddressView extends React.Component {
   state = {
     short_address: '',
+    loadedShort_address: [],
+  };
+
+  removeLoadedShort_addressFromState = () => {
+    let state = this.state;
+    delete state.loadedShort_address;
+    this.setState({...state});
+  };
+
+  setShort_address = address => {
+    this.setState({short_address: address});
+  };
+
+  capitalizeFirstLetter = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   componentDidMount() {
@@ -33,11 +49,34 @@ export default class InputShortAddressView extends React.Component {
       'partialSearchTerm',
     );
 
+    if (!this.state.loadedShort_address) {
+      let state = this.state;
+      state.loadedShort_address = [];
+    }
+
     state = {...state, ...incomingState};
     this.setState({...state}, () => {
       console.log('mount', this.state);
     });
-    // console.log('mount: ', this.state);
+    fetch(
+      'https://rentalvr.herokuapp.com/api/rentListings/getDistinctShort_address',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      },
+    )
+      .then(res => res.json())
+      .then(result => {
+        this.setState({loadedShort_address: result}, () => {
+          console.log(this.state.loadedShort_address);
+        });
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   render() {
@@ -48,27 +87,38 @@ export default class InputShortAddressView extends React.Component {
             <View>
               <Text>Which Area/Location do you want to rent from?</Text>
             </View>
-            <Item style={{marginBottom: 10}}>
-              <Input
-                placeholder="Area"
-                onChangeText={text =>
-                  this.setState({short_address: text}, () => {
-                    console.log(this.state);
-                  })
-                }
-              />
+            <Item picker>
+              <Picker
+                mode="dropdown"
+                iosIcon={<Icon name="arrow-down" />}
+                style={{width: undefined}}
+                placeholder="Select your address"
+                placeholderStyle={{color: '#bfc6ea'}}
+                placeholderIconColor="#007aff"
+                selectedValue={this.state.short_address}
+                onValueChange={address => {
+                  this.setShort_address(address);
+                }}>
+                {this.state.loadedShort_address.map(address => (
+                  <Picker.Item
+                    key={address}
+                    label={this.capitalizeFirstLetter(address)}
+                    value={address}
+                  />
+                ))}
+              </Picker>
             </Item>
           </Form>
           <Button
             onPress={() => {
-              if (!this.state.short_address) {
-                let state = this.state;
+              let state = this.state;
+              if (!state.short_address) {
                 delete state.short_address;
-                this.setState({...state});
               }
+              delete state.loadedShort_address;
 
               return this.props.navigation.navigate('InputDescriptionView', {
-                partialSearchTerm: this.state,
+                partialSearchTerm: state,
               });
             }}>
             <Text>Next</Text>
@@ -77,6 +127,9 @@ export default class InputShortAddressView extends React.Component {
             onPress={() => {
               let partialSearchTerm = this.state;
               delete partialSearchTerm.short_address;
+              delete partialSearchTerm.loadedShort_address;
+              console.log('partialSearchTerm', partialSearchTerm);
+
               return this.props.navigation.navigate('InputDescriptionView', {
                 partialSearchTerm,
               });
