@@ -1,30 +1,24 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {
   Container,
-  Header,
-  Title,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Icon,
-  Left,
-  Right,
-  Body,
   Text,
   Item,
-  Input,
   View,
   Picker,
   Form,
 } from 'native-base';
-import {add} from 'react-native-reanimated';
+
+import CardView from '../CardView/CardView';
 
 export default class InputShortAddressView extends React.Component {
   state = {
     short_address: '',
     loadedShort_address: [],
+    searchResult: [],
   };
 
   removeLoadedShort_addressFromState = () => {
@@ -44,15 +38,45 @@ export default class InputShortAddressView extends React.Component {
   componentDidMount() {
     const {navigation} = this.props;
     let state = this.state;
+
     let incomingState = navigation.getParam(
       'partialSearchTerm',
       'partialSearchTerm',
     );
 
-    if (!this.state.loadedShort_address) {
-      let state = this.state;
-      state.loadedShort_address = [];
-    }
+    fetch('https://rentalvr.herokuapp.com/api/rentListings/specificSearch', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(incomingState),
+    })
+      .then(res => res.json())
+      .then(
+        result => {
+          if (result.length > 0) {
+            let searchResult = result.map(list => ({
+              id: list._id,
+              title: list.title,
+            }));
+            this.setState({searchResult});
+          } else {
+            this.setState({searchResult: [{id: 0, title: 'No Result :('}]});
+          }
+        },
+        e => {
+          console.log(e);
+        },
+      );
+
+    // if (
+    //   !this.state.loadedShort_address ||
+    //   this.state.loadedShort_address.length <= 0
+    // ) {
+    //   let state = this.state;
+    //   state.loadedShort_address = [];
+    // }
 
     state = {...state, ...incomingState};
     this.setState({...state}, () => {
@@ -80,6 +104,7 @@ export default class InputShortAddressView extends React.Component {
   }
 
   render() {
+    // console.log('state: ', this.state.loadedShort_address);
     return (
       <Container>
         <Content>
@@ -108,34 +133,53 @@ export default class InputShortAddressView extends React.Component {
                 ))}
               </Picker>
             </Item>
+            <Button
+              onPress={() => {
+                let state = {...this.state};
+                if (!state.short_address) {
+                  delete state.short_address;
+                }
+                delete state.loadedShort_address;
+                delete state.searchResult;
+
+                return this.props.navigation.navigate('InputDescriptionView', {
+                  partialSearchTerm: state,
+                });
+              }}>
+              <Text>Next</Text>
+            </Button>
+            <Button
+              onPress={() => {
+                let partialSearchTerm = {...this.state};
+                delete partialSearchTerm.short_address;
+                delete partialSearchTerm.loadedShort_address;
+                delete partialSearchTerm.searchResult;
+                console.log('partialSearchTerm', partialSearchTerm);
+
+                return this.props.navigation.navigate('InputDescriptionView', {
+                  partialSearchTerm,
+                });
+              }}>
+              <Text>Skip</Text>
+            </Button>
           </Form>
-          <Button
-            onPress={() => {
-              let state = this.state;
-              if (!state.short_address) {
-                delete state.short_address;
-              }
-              delete state.loadedShort_address;
-
-              return this.props.navigation.navigate('InputDescriptionView', {
-                partialSearchTerm: state,
-              });
-            }}>
-            <Text>Next</Text>
-          </Button>
-          <Button
-            onPress={() => {
-              let partialSearchTerm = this.state;
-              delete partialSearchTerm.short_address;
-              delete partialSearchTerm.loadedShort_address;
-              console.log('partialSearchTerm', partialSearchTerm);
-
-              return this.props.navigation.navigate('InputDescriptionView', {
-                partialSearchTerm,
-              });
-            }}>
-            <Text>Skip</Text>
-          </Button>
+          <View>
+            <Container>
+              <Content style={{padding: 5}}>
+                {this.state.searchResult.map(item => (
+                  <TouchableOpacity
+                    key={item.id.toString()}
+                    onPress={() => {
+                      this.props.navigation.navigate('SingleSearchResultView', {
+                        rentId: item.id,
+                      });
+                    }}>
+                    <CardView title={item.title}></CardView>
+                  </TouchableOpacity>
+                ))}
+              </Content>
+            </Container>
+          </View>
         </Content>
       </Container>
     );

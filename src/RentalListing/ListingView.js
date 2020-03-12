@@ -28,6 +28,8 @@ import {/* createAppContainer, */ withNavigationFocus} from 'react-navigation';
 
 // import SingleListView from './SingleListView';
 
+import CardView from '../CardView/CardView';
+
 class ListingView extends Component {
   constructor(props) {
     super(props);
@@ -167,21 +169,6 @@ class ListingView extends Component {
           <Content style={{padding: 5}}>{rows}</Content>
         </Container>
       </Root>
-    );
-  }
-}
-
-class CardView extends Component {
-  render() {
-    return (
-      <Card>
-        <CardItem>
-          {/* <Thumbnail source={{uri: this.props.image}} /> */}
-          <Text>{this.props.title}</Text>
-          {/* <Text>{this.props.location}</Text> */}
-          {/* <Text>{this.props.price}</Text> */}
-        </CardItem>
-      </Card>
     );
   }
 }

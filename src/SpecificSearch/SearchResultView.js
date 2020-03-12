@@ -9,20 +9,12 @@ import {
   Card,
   CardItem,
   Content,
-  Button,
-  Left,
-  Right,
-  Body,
-  Icon,
   Text,
-  Input,
-  Thumbnail,
   Root,
-  Title,
-  Item,
-  View,
 } from 'native-base';
-import {/* createAppContainer, */ withNavigationFocus} from 'react-navigation';
+// import {/* createAppContainer, */ withNavigationFocus} from 'react-navigation';
+
+import CardView from '../CardView/CardView';
 
 export default class SearchResultView extends Component {
   state = {
@@ -105,18 +97,6 @@ export default class SearchResultView extends Component {
   
   
   */
-}
-
-class CardView extends Component {
-  render() {
-    return (
-      <Card>
-        <CardItem>
-          <Text>{this.props.title}</Text>
-        </CardItem>
-      </Card>
-    );
-  }
 }
 
 //dont delete code below
