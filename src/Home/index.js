@@ -7,9 +7,8 @@ import SettingsView from '../Settings/index';
 import AboutView from '../About/index';
 import HelpView from '../Help/index';
 import SignUpView from '../SignUp/index';
-import RenterProfile from '../AddListing/index';
+import Form1 from '../Form1/index';
 import SpecificSearch from '../Search/index';
-import SpecificSearch2 from '../SpecificSearch/index';
 
 const HomeRouter = createDrawerNavigator(
   {
@@ -28,14 +27,11 @@ const HomeRouter = createDrawerNavigator(
     SignUpView: {
       screen: SignUpView,
     },
-    RenterProfile: {
-      screen: RenterProfile,
+    Form1: {
+      screen: Form1,
     },
     SpecificSearch: {
       screen: SpecificSearch,
-    },
-    SpecificSearch2: {
-      screen: SpecificSearch2,
     },
   },
 
