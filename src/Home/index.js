@@ -8,7 +8,7 @@ import AboutView from '../About/index';
 import HelpView from '../Help/index';
 import SignUpView from '../SignUp/index';
 import Form1 from '../Form1/index';
-import SpecificSearch from '../Search/index';
+import Form2 from '../Form2/index';
 
 const HomeRouter = createDrawerNavigator(
   {
@@ -30,8 +30,8 @@ const HomeRouter = createDrawerNavigator(
     Form1: {
       screen: Form1,
     },
-    SpecificSearch: {
-      screen: SpecificSearch,
+    Form2: {
+      screen: Form2,
     },
   },
 
