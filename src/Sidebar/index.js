@@ -8,7 +8,7 @@ const routes = [
   {name: 'About', route: 'AboutView'},
   {name: 'Help', route: 'HelpView'},
   {name: 'Form1', route: 'Form1'},
-  {name: 'Form', route: 'Form2'},
+  {name: 'Form2', route: 'Form2'},
 ];
 
 export default class Sidebar extends React.Component {
