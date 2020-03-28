@@ -65,7 +65,7 @@ export default class SignInView extends React.Component {
     };
 
     // console.log(signInDetails);
-    fetch('https://rentalvr.herokuapp.com/auth/signin', {
+    fetch(URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
