@@ -6,7 +6,6 @@ import Sidebar from '../Sidebar/index';
 import SettingsView from '../Settings/index';
 import AboutView from '../About/index';
 import HelpView from '../Help/index';
-import ListingView from '../RentalListing/index';
 import SignUpView from '../SignUp/index';
 import RenterProfile from '../AddListing/index';
 import SpecificSearch from '../Search/index';
@@ -14,9 +13,6 @@ import SpecificSearch2 from '../SpecificSearch/index';
 
 const HomeRouter = createDrawerNavigator(
   {
-    ListingView: {
-      screen: ListingView,
-    },
     SignInView: {
       screen: SignInView,
     },
@@ -44,7 +40,7 @@ const HomeRouter = createDrawerNavigator(
   },
 
   {
-    initialRouteName: 'ListingView',
+    initialRouteName: 'SignInView',
     // headerMode: 'none',
     contentOptions: {
       activeTintColor: '#e91e63',

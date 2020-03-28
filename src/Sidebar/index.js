@@ -3,7 +3,6 @@ import {AppRegistry, Image, StatusBar} from 'react-native';
 import {Container, Content, Text, List, ListItem, Left} from 'native-base';
 
 const routes = [
-  {name: 'Home', route: 'ListingView'},
   {name: 'Sign In', route: 'SignInView'},
   {name: 'Sign Up', route: 'SignUpView'},
   {name: 'About', route: 'AboutView'},
